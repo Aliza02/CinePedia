@@ -7,10 +7,13 @@ class clipRRect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-        child: Image.network(
-          imageAddress,
-          fit: BoxFit.cover,
-        ));
+      borderRadius: BorderRadius.circular(20.0),
+      child: Image.network(
+        cacheWidth: 372,
+        cacheHeight: 558,
+        imageAddress,
+        fit: BoxFit.cover,
+      ),
+    );
   }
 }

@@ -34,7 +34,9 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: const [
           CircleAvatar(
-            backgroundImage: AssetImage('assets/images/profileImage.jpg'),
+            backgroundImage: AssetImage('assets/images/profileImage.jpg',
+            
+            ),
           ),
         ],
       ),

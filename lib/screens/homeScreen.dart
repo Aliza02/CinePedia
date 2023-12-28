@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cinepedia/bloc/categoryBloc.dart';
 import 'package:cinepedia/model/popularMovies.dart';
 import 'package:cinepedia/screens/detailPage.dart';
@@ -24,14 +22,14 @@ class home_screen extends StatefulWidget {
 
 class _home_screenState extends State<home_screen> {
   List<String> chipTitle = ['Home', 'Movies', 'Series', 'Shows'];
-  List<popularMovies> popular_movies = [];
+  // List<popularMovies> popular_movies = [];
   String accessToken =
-      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNWJjMGE0Njc4ZTA3YzYxODdlNmVlMjZlYTI3NDRkMiIsInN1YiI6IjY1NzVlNDYzYzYwMDZkMDEwMjdjNDY5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.guF3X4pUfdGX3Dy19x7n6jRkjc6wNQsB_0PboH9qVMM';
+      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMzllMGI1ZjU3NTM2NGMxNTcxOGQzMGUzYjhhMWYzNCIsInN1YiI6IjY1NzVlNDYzYzYwMDZkMDEwMjdjNDY5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eSiiMzHd8w1P3rWFCQFHxqQnzbsx-c-TAFaezaPA2x8';
 
   Future<popularMovies> getPopularMovies() async {
     final result = Uri.parse('https://api.themoviedb.org/3/movie/popular');
     final response = await http.get(result, headers: {
-      'Authorization': 'Bearer ${accessToken}',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
@@ -46,10 +44,13 @@ class _home_screenState extends State<home_screen> {
 
   Future<popularMovies> nowPlayingMovies() async {
     final result = Uri.parse('https://api.themoviedb.org/3/movie/upcoming');
-    final response = await http.get(result, headers: {
-      'Authorization': 'Bearer ${accessToken}',
-      'Content-Type': 'application/json',
-    });
+    final response = await http.get(
+      result,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+    );
     if (response.statusCode == 200) {
       final finalResult = jsonDecode(response.body.toString());
       return popularMovies.fromJson(finalResult);
@@ -106,8 +107,14 @@ class _home_screenState extends State<home_screen> {
                     future: getPopularMovies(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return SizedBox(
+                          height: Get.height * 0.4,
+                          width: Get.width,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.red,
+                            ),
+                          ),
                         );
                       } else {
                         return ScaledList(
@@ -151,7 +158,15 @@ class _home_screenState extends State<home_screen> {
                       future: nowPlayingMovies(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return const CircularProgressIndicator();
+                          return SizedBox(
+                            height: Get.height * 0.4,
+                            width: Get.width,
+                            child: const Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.red,
+                              ),
+                            ),
+                          );
                         } else {
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -171,9 +186,25 @@ class _home_screenState extends State<home_screen> {
                                           ),
                                           child: InkWell(
                                             onTap: () {
-                                              print('goto');
                                               Get.to(
                                                 () => detailPage(
+                                                  title: snapshot.data!
+                                                      .results![index].title
+                                                      .toString(),
+                                                  rating: snapshot
+                                                      .data!
+                                                      .results![index]
+                                                      .voteAverage!
+                                                      .round()
+                                                      .toString(),
+                                                  movie_id: snapshot
+                                                      .data!.results![index].id!
+                                                      .toString(),
+                                                  noOfGenres: snapshot
+                                                      .data!
+                                                      .results![index]
+                                                      .genreIds!
+                                                      .length,
                                                   imagetitle:
                                                       'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
                                                 ),
