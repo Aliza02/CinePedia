@@ -14,7 +14,7 @@ abstract class ButtonState {}
 class ButtonUnselectedState extends ButtonState {}
 
 class ButtonSelectedState extends ButtonState {
-  final int selectedButtonIndex;
+  int selectedButtonIndex = 0;
 
   ButtonSelectedState(this.selectedButtonIndex);
 }

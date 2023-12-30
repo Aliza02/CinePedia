@@ -22,7 +22,7 @@ class section_heading extends StatelessWidget {
         title,
         style: TextStyle(
           color: Colors.white,
-          fontSize: Get.width * 0.05,
+          fontSize: Get.width * 0.06,
           fontWeight: FontWeight.w500,
         ),
       ),

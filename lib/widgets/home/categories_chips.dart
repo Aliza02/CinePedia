@@ -34,6 +34,11 @@ class _categories_chipsState extends State<categories_chips> {
     }
   }
 
+  void initState(){
+    super.initState();
+    BlocProvider.of<ButtonBloc>(context).add(getEvent(0));
+  }
+
   @override
   Widget build(BuildContext context) {
     //  final selected=( widget.state is ButtonSelectedState ==widget.index)

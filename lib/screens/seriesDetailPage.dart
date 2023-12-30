@@ -10,33 +10,33 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shimmer/shimmer.dart';
 
-class detailPage extends StatefulWidget {
+class seriesDetailPage extends StatefulWidget {
   final String imagetitle;
   final String title;
   final String rating;
-  final String movie_id;
+  final String seriesId;
   final int noOfGenres;
-  const detailPage(
+  const seriesDetailPage(
       {super.key,
       required this.imagetitle,
-      required this.movie_id,
+      required this.seriesId,
       required this.noOfGenres,
       required this.title,
       required this.rating});
 
   @override
-  State<detailPage> createState() => _detailPageState();
+  State<seriesDetailPage> createState() => _seriesDetailPageState();
 }
 
-class _detailPageState extends State<detailPage> {
+class _seriesDetailPageState extends State<seriesDetailPage> {
   String accessToken =
       'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMzllMGI1ZjU3NTM2NGMxNTcxOGQzMGUzYjhhMWYzNCIsInN1YiI6IjY1NzVlNDYzYzYwMDZkMDEwMjdjNDY5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eSiiMzHd8w1P3rWFCQFHxqQnzbsx-c-TAFaezaPA2x8';
 
   Future<details> loadingDetails() async {
     final result =
-        Uri.parse("https://api.themoviedb.org/3/movie/${widget.movie_id}");
+        Uri.parse("https://api.themoviedb.org/3/tv/${widget.seriesId}");
     final response = await http.get(result, headers: {
-      'Authorization': 'Bearer ${accessToken}',
+      'Authorization': 'Bearer $accessToken',
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
@@ -154,31 +154,33 @@ class _detailPageState extends State<detailPage> {
                     } else {
                       return Column(
                         children: [
-                          Row(
-                            children: List.generate(
-                              snapshot.data!.genres!.length,
-                              (index) => Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 6.0),
-                                // height: Get.height * 0.06,
-                                padding: EdgeInsets.symmetric(
-                                  vertical: Get.height * 0.005,
-                                  horizontal: Get.width * 0.03,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(Get.width * 0.06),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2.0,
+                          SizedBox(
+                            child: Row(
+                              children: List.generate(
+                                snapshot.data!.genres!.length,
+                                (index) => Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 6.0),
+                                  // height: Get.height * 0.06,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: Get.height * 0.005,
+                                    horizontal: Get.width * 0.03,
                                   ),
-                                ),
-                                child: text(
-                                  title: snapshot.data!.genres![index].name
-                                      .toString(),
-                                  fontSize: Get.width * 0.04,
-                                  fontWeight: FontWeight.w400,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius:
+                                        BorderRadius.circular(Get.width * 0.06),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  child: text(
+                                    title: snapshot.data!.genres![index].name
+                                        .toString(),
+                                    fontSize: Get.width * 0.04,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                                 ),
                               ),
                             ),

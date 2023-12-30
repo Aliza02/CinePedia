@@ -16,7 +16,7 @@ class text extends StatelessWidget {
     return Text(
       title,
       softWrap: true,
-      maxLines: 2,
+      maxLines: 3,
       style: TextStyle(
         color: Color.fromARGB(255, 228, 222, 222),
         fontSize: fontSize,
