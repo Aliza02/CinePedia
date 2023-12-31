@@ -3,6 +3,7 @@ import 'package:cinepedia/widgets/appBar.dart';
 import 'package:cinepedia/widgets/home/categories_chips.dart';
 import 'package:cinepedia/widgets/home/homeMovies.dart';
 import 'package:cinepedia/widgets/movies/movies.dart';
+import 'package:cinepedia/widgets/season/season.dart';
 import 'package:cinepedia/widgets/series/series.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,8 +18,13 @@ class home_screen extends StatefulWidget {
 }
 
 class _home_screenState extends State<home_screen> {
-  List<String> chipTitle = ['Home', 'Movies', 'Series', 'Shows'];
-  // List<popularMovies> popular_movies = [];
+  List<String> chipTitle = [
+    'Home',
+    'Movies',
+    'Series',
+    'Season',
+  ];
+
   String accessToken =
       'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMzllMGI1ZjU3NTM2NGMxNTcxOGQzMGUzYjhhMWYzNCIsInN1YiI6IjY1NzVlNDYzYzYwMDZkMDEwMjdjNDY5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eSiiMzHd8w1P3rWFCQFHxqQnzbsx-c-TAFaezaPA2x8';
 
@@ -39,9 +45,9 @@ class _home_screenState extends State<home_screen> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: List.generate(
-                        4,
+                        chipTitle.length,
                         (index) {
                           return categories_chips(
                             title: chipTitle[index],
@@ -70,7 +76,9 @@ class _home_screenState extends State<home_screen> {
                           child: series(),
                         );
                       } else {
-                        return Container();
+                        return const Expanded(
+                          child: season(),
+                        );
                       }
                     },
                   ),

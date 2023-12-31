@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cinepedia/model/details.dart';
+import 'package:cinepedia/model/seriesDetail.dart';
 import 'package:cinepedia/widgets/clipRRect.dart';
 import 'package:cinepedia/widgets/divider.dart';
 import 'package:cinepedia/widgets/shimmerContainer.dart';
@@ -32,7 +33,7 @@ class _seriesDetailPageState extends State<seriesDetailPage> {
   String accessToken =
       'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMzllMGI1ZjU3NTM2NGMxNTcxOGQzMGUzYjhhMWYzNCIsInN1YiI6IjY1NzVlNDYzYzYwMDZkMDEwMjdjNDY5MyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eSiiMzHd8w1P3rWFCQFHxqQnzbsx-c-TAFaezaPA2x8';
 
-  Future<details> loadingDetails() async {
+  Future<seriesDetail> loadingDetails() async {
     final result =
         Uri.parse("https://api.themoviedb.org/3/tv/${widget.seriesId}");
     final response = await http.get(result, headers: {
@@ -40,9 +41,9 @@ class _seriesDetailPageState extends State<seriesDetailPage> {
       'Content-Type': 'application/json',
     });
     if (response.statusCode == 200) {
-      return details.fromJson(jsonDecode(response.body));
+      return seriesDetail.fromJson(jsonDecode(response.body));
     } else {
-      return details.fromJson(jsonDecode(response.body));
+      return seriesDetail.fromJson(jsonDecode(response.body));
     }
   }
 
@@ -209,7 +210,7 @@ class _seriesDetailPageState extends State<seriesDetailPage> {
                                 SizedBox(
                                   width: Get.width * 0.5,
                                   child: text(
-                                    title: 'Release Date',
+                                    title: 'No of Seasons',
                                     fontSize: Get.width * 0.04,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -217,8 +218,8 @@ class _seriesDetailPageState extends State<seriesDetailPage> {
                                 SizedBox(
                                   width: Get.width * 0.3,
                                   child: text(
-                                    title:
-                                        snapshot.data!.releaseDate.toString(),
+                                    title: snapshot.data!.seasons!.length
+                                        .toString(),
                                     fontSize: Get.width * 0.04,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -258,10 +259,10 @@ class _seriesDetailPageState extends State<seriesDetailPage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8.0, vertical: 8.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 SizedBox(
-                                  width: Get.width * 0.5,
+                                  width: Get.width * 0.6,
                                   child: text(
                                     title: 'Production Companies',
                                     fontSize: Get.width * 0.04,
@@ -277,7 +278,7 @@ class _seriesDetailPageState extends State<seriesDetailPage> {
                                         .data!.productionCompanies!.length,
                                     itemBuilder: (context, index) {
                                       return SizedBox(
-                                        // width: Get.width * 0.3,
+                                        width: Get.width * 0.3,
                                         child: text(
                                           title: snapshot.data!
                                               .productionCompanies![index].name
