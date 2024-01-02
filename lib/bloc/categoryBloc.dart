@@ -2,11 +2,6 @@ import 'package:bloc/bloc.dart';
 
 // Define the events
 enum ButtonEvent { ButtonEvent1, ButtonEvent2, ButtonEvent3, ButtonEvent4 }
-// abstract class ButtonEvent {}
-
-// class ButtonEvent1 extends ButtonEvent {}
-
-// class ButtonEvent2 extends ButtonEvent {}
 
 // Define the states
 abstract class ButtonState {}

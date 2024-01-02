@@ -1,4 +1,8 @@
+import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
+import 'package:cinepedia/screens/favourites.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class appBar extends StatelessWidget implements PreferredSizeWidget {
   const appBar({super.key});
@@ -32,12 +36,15 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
         ),
-        actions: const [
-          CircleAvatar(
-            backgroundImage: AssetImage('assets/images/profileImage.jpg',
-            
-            ),
-          ),
+        actions: [
+          InkWell(
+              onTap: () {
+                Get.to(() => BlocProvider.value(
+                    value: BlocProvider.of<FavoriteBloc>(context),
+                    child: favourites()));
+              },
+              child: const Icon(Icons.more_vert, color: Colors.white)),
+          
         ],
       ),
     );

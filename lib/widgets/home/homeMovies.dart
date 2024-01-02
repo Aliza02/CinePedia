@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
 import 'package:cinepedia/model/popularMovies.dart';
 import 'package:cinepedia/screens/detailPage.dart';
 import 'package:cinepedia/widgets/clipRRect.dart';
 import 'package:cinepedia/widgets/headings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:scaled_list/scaled_list.dart';
 import 'package:http/http.dart' as http;
@@ -95,19 +97,22 @@ class _homeMoviesState extends State<homeMovies> {
                     return InkWell(
                       onTap: () {
                         Get.to(
-                          () => detailPage(
-                            title: snapshot.data!.results![index].title
-                                .toString(),
-                            rating: snapshot
-                                .data!.results![index].voteAverage!
-                                .round()
-                                .toString(),
-                            movie_id:
-                                snapshot.data!.results![index].id!.toString(),
-                            noOfGenres: snapshot
-                                .data!.results![index].genreIds!.length,
-                            imagetitle:
-                                'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
+                          () => BlocProvider.value(
+                            value: BlocProvider.of<FavoriteBloc>(context),
+                            child: detailPage(
+                              title: snapshot.data!.results![index].title
+                                  .toString(),
+                              rating: snapshot
+                                  .data!.results![index].voteAverage!
+                                  .round()
+                                  .toString(),
+                              movie_id:
+                                  snapshot.data!.results![index].id!.toString(),
+                              noOfGenres: snapshot
+                                  .data!.results![index].genreIds!.length,
+                              imagetitle:
+                                  'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
+                            ),
                           ),
                         );
                       },
@@ -172,24 +177,28 @@ class _homeMoviesState extends State<homeMovies> {
                                   child: InkWell(
                                     onTap: () {
                                       Get.to(
-                                        () => detailPage(
-                                          title: snapshot
-                                              .data!.results![index].title
-                                              .toString(),
-                                          rating: snapshot.data!
-                                              .results![index].voteAverage!
-                                              .round()
-                                              .toString(),
-                                          movie_id: snapshot
-                                              .data!.results![index].id!
-                                              .toString(),
-                                          noOfGenres: snapshot
-                                              .data!
-                                              .results![index]
-                                              .genreIds!
-                                              .length,
-                                          imagetitle:
-                                              'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
+                                        () => BlocProvider.value(
+                                          value: BlocProvider.of<FavoriteBloc>(
+                                              context),
+                                          child: detailPage(
+                                            title: snapshot
+                                                .data!.results![index].title
+                                                .toString(),
+                                            rating: snapshot.data!
+                                                .results![index].voteAverage!
+                                                .round()
+                                                .toString(),
+                                            movie_id: snapshot
+                                                .data!.results![index].id!
+                                                .toString(),
+                                            noOfGenres: snapshot
+                                                .data!
+                                                .results![index]
+                                                .genreIds!
+                                                .length,
+                                            imagetitle:
+                                                'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
+                                          ),
                                         ),
                                       );
                                     },

@@ -33,57 +33,54 @@ class _home_screenState extends State<home_screen> {
     return SafeArea(
       child: Scaffold(
         appBar: const appBar(),
-        body: BlocProvider(
-          create: (context) => ButtonBloc(),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: SizedBox(
-              height: Get.height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: List.generate(
-                        chipTitle.length,
-                        (index) {
-                          return categories_chips(
-                            title: chipTitle[index],
-                            index: index,
-                            categoryKey: chipTitle[index],
-                          );
-                        },
-                      ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: SizedBox(
+            height: Get.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(
+                      chipTitle.length,
+                      (index) {
+                        return categories_chips(
+                          title: chipTitle[index],
+                          index: index,
+                          categoryKey: chipTitle[index],
+                        );
+                      },
                     ),
                   ),
-                  BlocBuilder<ButtonBloc, ButtonState>(
-                    builder: (context, state) {
-                      if (state is ButtonSelectedState &&
-                          state.selectedButtonIndex == 0) {
-                        return const Expanded(
-                          child: homeMovies(),
-                        );
-                      } else if (state is ButtonSelectedState &&
-                          state.selectedButtonIndex == 1) {
-                        return const Expanded(
-                          child: movies(),
-                        );
-                      } else if (state is ButtonSelectedState &&
-                          state.selectedButtonIndex == 2) {
-                        return const Expanded(
-                          child: series(),
-                        );
-                      } else {
-                        return const Expanded(
-                          child: season(),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
+                ),
+                BlocBuilder<ButtonBloc, ButtonState>(
+                  builder: (context, state) {
+                    if (state is ButtonSelectedState &&
+                        state.selectedButtonIndex == 0) {
+                      return const Expanded(
+                        child: homeMovies(),
+                      );
+                    } else if (state is ButtonSelectedState &&
+                        state.selectedButtonIndex == 1) {
+                      return const Expanded(
+                        child: movies(),
+                      );
+                    } else if (state is ButtonSelectedState &&
+                        state.selectedButtonIndex == 2) {
+                      return const Expanded(
+                        child: series(),
+                      );
+                    } else {
+                      return const Expanded(
+                        child: season(),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),

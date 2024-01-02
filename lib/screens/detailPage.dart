@@ -1,14 +1,17 @@
 import 'dart:convert';
-
+import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
+import 'package:cinepedia/bloc/addToFavouriteEvent.dart';
+import 'package:cinepedia/bloc/addToFavouritesState.dart';
+import 'package:cinepedia/model/addToFav.dart';
 import 'package:cinepedia/model/details.dart';
 import 'package:cinepedia/widgets/clipRRect.dart';
 import 'package:cinepedia/widgets/divider.dart';
 import 'package:cinepedia/widgets/shimmerContainer.dart';
 import 'package:cinepedia/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shimmer/shimmer.dart';
 
 class detailPage extends StatefulWidget {
   final String imagetitle;
@@ -16,6 +19,7 @@ class detailPage extends StatefulWidget {
   final String rating;
   final String movie_id;
   final int noOfGenres;
+
   const detailPage(
       {super.key,
       required this.imagetitle,
@@ -155,33 +159,74 @@ class _detailPageState extends State<detailPage> {
                       return Column(
                         children: [
                           Row(
-                            children: List.generate(
-                              snapshot.data!.genres!.length,
-                              (index) => Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 6.0),
-                                // height: Get.height * 0.06,
-                                padding: EdgeInsets.symmetric(
-                                  vertical: Get.height * 0.005,
-                                  horizontal: Get.width * 0.03,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(Get.width * 0.06),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2.0,
+                            children: [
+                              Row(
+                                children: List.generate(
+                                  snapshot.data!.genres!.length,
+                                  (index) => Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 3.0),
+                                    // height: Get.height * 0.06,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: Get.height * 0.005,
+                                      horizontal: Get.width * 0.03,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.circular(
+                                          Get.width * 0.06),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                    child: text(
+                                      title: snapshot.data!.genres![index].name
+                                          .toString(),
+                                      fontSize: Get.width * 0.04,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
-                                child: text(
-                                  title: snapshot.data!.genres![index].name
-                                      .toString(),
-                                  fontSize: Get.width * 0.04,
-                                  fontWeight: FontWeight.w400,
-                                ),
                               ),
-                            ),
+                              BlocBuilder<FavoriteBloc, FavoriteState>(
+                                  builder: (context, state) {
+                                return InkWell(
+                                  onTap: () {
+                                    final addToFav item = addToFav(
+                                      imgUrl:
+                                          snapshot.data!.posterPath.toString(),
+                                      title: snapshot.data!.title.toString(),
+                                    );
+                                    final favBloc =
+                                        context.read<FavoriteBloc>();
+                                    favBloc.add(AddToFavorites(item));
+                                    if (state is FavoritesLoaded) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor:
+                                              Colors.white.withOpacity(0.6),
+                                          duration: const Duration(seconds: 2),
+                                          content: Text(
+                                            'Added to Favorites',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: Get.width * 0.04,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  ),
+                                );
+                                // }
+                              }),
+                            ],
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(

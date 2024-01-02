@@ -1,14 +1,12 @@
 import 'dart:convert';
-
-import 'package:cinepedia/model/nowPlaying.dart';
+import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
 import 'package:cinepedia/model/seriesList.dart';
-import 'package:cinepedia/screens/detailPage.dart';
 import 'package:cinepedia/screens/seriesDetailPage.dart';
 import 'package:cinepedia/widgets/clipRRect.dart';
 import 'package:cinepedia/widgets/headings.dart';
 import 'package:cinepedia/widgets/shimmerContainer.dart';
-import 'package:cinepedia/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -116,26 +114,31 @@ class _seriesState extends State<series> {
                                       child: InkWell(
                                         onTap: () {
                                           Get.to(
-                                            () => seriesDetailPage(
-                                                imagetitle:
-                                                    'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
-                                                seriesId: snapshot
-                                                    .data!.results![index].id
-                                                    .toString(),
-                                                noOfGenres: snapshot
-                                                    .data!
-                                                    .results![index]
-                                                    .genreIds!
-                                                    .length,
-                                                title: snapshot
-                                                    .data!.results![index].name
-                                                    .toString(),
-                                                rating: snapshot
-                                                    .data!
-                                                    .results![index]
-                                                    .voteAverage!
-                                                    .round()
-                                                    .toString()),
+                                            () => BlocProvider.value(
+                                              value:
+                                                  BlocProvider.of<FavoriteBloc>(
+                                                      context),
+                                              child: seriesDetailPage(
+                                                  imagetitle:
+                                                      'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
+                                                  seriesId: snapshot
+                                                      .data!.results![index].id
+                                                      .toString(),
+                                                  noOfGenres: snapshot
+                                                      .data!
+                                                      .results![index]
+                                                      .genreIds!
+                                                      .length,
+                                                  title: snapshot.data!
+                                                      .results![index].name
+                                                      .toString(),
+                                                  rating: snapshot
+                                                      .data!
+                                                      .results![index]
+                                                      .voteAverage!
+                                                      .round()
+                                                      .toString()),
+                                            ),
                                           );
                                         },
                                         child: Hero(

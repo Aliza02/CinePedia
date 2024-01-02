@@ -287,7 +287,7 @@ class LastEpisodeToAir {
     runtime = json['runtime'];
     seasonNumber = json['season_number'];
     showId = json['show_id'];
-    stillPath = json['still_path'];
+    // stillPath = json['still_path'];
   }
 
   Map<String, dynamic> toJson() {

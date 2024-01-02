@@ -1,15 +1,12 @@
 import 'dart:convert';
-import 'package:cinepedia/model/nowPlaying.dart';
+import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
 import 'package:cinepedia/model/seasonDetail.dart';
-import 'package:cinepedia/model/seriesList.dart';
-import 'package:cinepedia/screens/detailPage.dart';
 import 'package:cinepedia/screens/seasonDetail.dart';
-import 'package:cinepedia/screens/seriesDetailPage.dart';
 import 'package:cinepedia/widgets/clipRRect.dart';
 import 'package:cinepedia/widgets/headings.dart';
 import 'package:cinepedia/widgets/shimmerContainer.dart';
-import 'package:cinepedia/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -116,18 +113,29 @@ class _seasonState extends State<season> {
                                       child: InkWell(
                                         onTap: () {
                                           Get.to(
-                                            () => seasonDetailPage(
-                                                imagetitle:
-                                                    'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
-                                                seriesId: snapshot
-                                                    .data!.results![index].id
-                                                    .toString(),
-                                               overview: snapshot.data!.results![index].overview.toString(),
-                                                title: snapshot
-                                                    .data!.results![index].name
-                                                    .toString(),
-                                                    originalLanguage: snapshot.data!.results![index].originalLanguage.toString(),
-                                                rating: '8'),
+                                            () => BlocProvider.value(
+                                              value:
+                                                  BlocProvider.of<FavoriteBloc>(
+                                                      context),
+                                              child: seasonDetailPage(
+                                                  imagetitle:
+                                                      'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
+                                                  seriesId: snapshot
+                                                      .data!.results![index].id
+                                                      .toString(),
+                                                  overview: snapshot.data!
+                                                      .results![index].overview
+                                                      .toString(),
+                                                  title: snapshot.data!
+                                                      .results![index].name
+                                                      .toString(),
+                                                  originalLanguage: snapshot
+                                                      .data!
+                                                      .results![index]
+                                                      .originalLanguage
+                                                      .toString(),
+                                                  rating: '8'),
+                                            ),
                                           );
                                         },
                                         child: Hero(
