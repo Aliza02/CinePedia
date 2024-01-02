@@ -126,33 +126,33 @@ class _seasonDetailPageState extends State<seasonDetailPage> {
                 ),
                 BlocBuilder<FavoriteBloc, FavoriteState>(
                     builder: (context, state) {
-                  return InkWell(
-                    onTap: () {
-                      final addToFav item = addToFav(
-                        imgUrl: widget.imagetitle,
-                        title: widget.title,
-                      );
-                      final favBloc = context.read<FavoriteBloc>();
-                      favBloc.add(AddToFavorites(item));
-                      if (state is FavoritesLoaded) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.white.withOpacity(0.6),
-                            duration: const Duration(seconds: 2),
-                            content: Text(
-                              'Added to Favorites',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: Get.width * 0.04,
+                  return Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(left: Get.width * 0.03),
+                    child: InkWell(
+                      onTap: () {
+                        final addToFav item = addToFav(
+                          imgUrl: widget.imagetitle,
+                          title: widget.title,
+                        );
+                        final favBloc = context.read<FavoriteBloc>();
+                        favBloc.add(AddToFavorites(item));
+                        if (state is FavoritesLoaded) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.white.withOpacity(0.6),
+                              duration: const Duration(seconds: 2),
+                              content: Text(
+                                'Added to Favorites',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Get.width * 0.04,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }
-                    },
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(left: Get.width * 0.03),
+                          );
+                        }
+                      },
                       child: const Icon(
                         Icons.favorite,
                         color: Colors.red,

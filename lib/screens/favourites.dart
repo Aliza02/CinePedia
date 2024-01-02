@@ -14,6 +14,7 @@ class favourites extends StatefulWidget {
 }
 
 class _favouritesState extends State<favourites> {
+  final GlobalKey<AnimatedListState> listKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -68,36 +69,79 @@ class _favouritesState extends State<favourites> {
                     );
                   } else {
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: state.favoriteItems.length,
-                        itemBuilder: (context, index) {
+                      child: AnimatedList(
+                        key: listKey,
+                        initialItemCount: state.favoriteItems.length,
+                        itemBuilder: (context, index, animation) {
                           final itemId = state.favoriteItems[index];
                           return Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: Get.width * 0.01),
                             padding: EdgeInsets.symmetric(
                                 horizontal: Get.width * 0.04),
-                            child: ListTile(
-                              tileColor:
-                                  const Color.fromARGB(255, 139, 134, 134)
-                                      .withOpacity(0.2),
-                              textColor: Colors.white,
-                              trailing: InkWell(
-                                onTap: () {
-                                  BlocProvider.of<FavoriteBloc>(context).add(
-                                    RemoveFromFavorites(index),
-                                  );
-                                },
-                                child: const Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
+                            child: SizeTransition(
+                              sizeFactor: animation,
+                              child: ListTile(
+                                tileColor:
+                                    const Color.fromARGB(255, 139, 134, 134)
+                                        .withOpacity(0.2),
+                                textColor: Colors.white,
+                                trailing: InkWell(
+                                  onTap: () {
+                                    listKey.currentState!.removeItem(
+                                        index,
+                                        (context, animation) => Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: Get.width * 0.01),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: Get.width * 0.04),
+                                              child: SizeTransition(
+                                                sizeFactor: animation,
+                                                child: ListTile(
+                                                  tileColor:
+                                                      const Color.fromARGB(255,
+                                                              139, 134, 134)
+                                                          .withOpacity(0.2),
+                                                  textColor: Colors.white,
+                                                  trailing: InkWell(
+                                                    onTap: () {
+                                                      BlocProvider.of<
+                                                                  FavoriteBloc>(
+                                                              context)
+                                                          .add(
+                                                        RemoveFromFavorites(
+                                                            index),
+                                                      );
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.delete,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            Get.width * 0.03),
+                                                  ),
+                                                  title: Text(itemId.title),
+                                                ),
+                                              ),
+                                            ));
+                                    BlocProvider.of<FavoriteBloc>(context).add(
+                                      RemoveFromFavorites(index),
+                                    );
+                                  },
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                  ),
                                 ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(Get.width * 0.03),
+                                ),
+                                title: Text(itemId.title),
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(Get.width * 0.03),
-                              ),
-                              title: Text(itemId.title),
                             ),
                           );
                         },

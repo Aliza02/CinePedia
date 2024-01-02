@@ -1,6 +1,12 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
+import 'package:cinepedia/bloc/categoryBloc.dart';
 import 'package:cinepedia/screens/homeScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart'
+    as GetTransitions;
 
 class splash_screen extends StatefulWidget {
   const splash_screen({super.key});
@@ -14,51 +20,56 @@ class _splash_screenState extends State<splash_screen> {
   @override
   void initState() {
     super.initState();
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual);
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    // Future.delayed(Duration(seconds: 3), () {
-    //   Navigator.of(context)
-    //       .push(MaterialPageRoute(builder: (context) => home_screen()));
-    // });
+    Future.delayed(const Duration(seconds: 3), () {
+      Get.to(
+          duration: const Duration(milliseconds: 800),
+          transition: GetTransitions.Transition.leftToRightWithFade,
+          () => MultiBlocProvider(providers: [
+                BlocProvider(
+                  create: (context) => ButtonBloc(),
+                ),
+                BlocProvider(
+                  create: (context) => FavoriteBloc(),
+                ),
+              ], child: const home_screen()));
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual);
-  }
-
-  void setWidth() {
-    setState(() {
-      width = 100.0;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color(0xFF2D2A2A),
-      // backgroundColor: Colors.red,
-
-      body: Hero(
-        tag:'logo',
-        child: InkWell(
-          onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context) => home_screen(tag: 'logo',)));
-
-            // Future.delayed(Duration(milliseconds: 300));
-            // Navigator.of(context).push(PageRouteBuilder(
-            //   transitionDuration: Duration(milliseconds: 500),
-            //     pageBuilder: (context,_,__) => home_screen(
-            //           tag: "logo",
-            //         )));
-          },
-          child:Center(
-            child: Image.asset('assets/images/Capture.PNG',
-            height: 100,
-            width: 100,
+      body: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Cine',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: Get.width * 0.1,
+                  fontFamily: 'Kalnia',
+                  fontWeight: FontWeight.normal),
             ),
-          )
+            AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText(
+                  cursor: String.fromCharCode(9612),
+                  speed: const Duration(milliseconds: 200),
+                  'pedia',
+                  textStyle: TextStyle(
+                      fontSize: Get.width * 0.1,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Kalnia',
+                      color: Colors.red),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

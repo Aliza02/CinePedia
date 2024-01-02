@@ -10,8 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class home_screen extends StatefulWidget {
-  final String tag;
-  const home_screen({super.key, required this.tag});
+  const home_screen({super.key});
 
   @override
   State<home_screen> createState() => _home_screenState();

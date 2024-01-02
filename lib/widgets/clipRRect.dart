@@ -1,5 +1,5 @@
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class clipRRect extends StatelessWidget {
   final String imageAddress;
@@ -10,6 +10,7 @@ class clipRRect extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20.0),
       child: Image.network(
+
         cacheWidth: 372,
         cacheHeight: 558,
         imageAddress,

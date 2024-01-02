@@ -1,17 +1,12 @@
-import 'dart:convert';
-// import 'package:cinepedia/bloc/categoriesBloc/categoriesBloc.dart';
-import 'package:cinepedia/bloc/addToFavouriteBloc.dart';
-import 'package:cinepedia/bloc/categoryBloc.dart';
-import 'package:cinepedia/model/popularMovies.dart';
-import 'package:cinepedia/screens/homeScreen.dart';
+import 'dart:io';
 import 'package:cinepedia/screens/splashScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:tmdb_api/tmdb_api.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get_navigation/src/routes/transitions_type.dart'
+    as GetTransitions;
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -25,24 +20,25 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xFF2D2A2A),
-        appBarTheme: AppBarTheme(
+        scaffoldBackgroundColor:const  Color(0xFF2D2A2A),
+        appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF2D2A2A),
         ),
         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         // useMaterial3: true,
       ),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => ButtonBloc(),
-          ),
-          BlocProvider(
-            create: (context) => FavoriteBloc(),
-          ),
-        ],
-        child: home_screen(tag: 'dasd',)),
+      home: const splash_screen(),
+       defaultTransition: GetTransitions.Transition.cupertino
       // const home_screen(tag: 'add'),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

@@ -20,21 +20,4 @@ class ButtonBloc extends Bloc<ButtonEvent, ButtonState> {
       emit(ButtonSelectedState(event.index));
     });
   }
-
-  // @override
-  // Stream<ButtonState> mapEventToState(ButtonEvent event) async* {
-  //   switch (event) {
-  //     case ButtonEvent.ButtonEvent1:
-  //       yield ButtonSelectedState(1);
-
-  //     case ButtonEvent.ButtonEvent2:
-  //       yield ButtonSelectedState(2);
-
-  //     case ButtonEvent.ButtonEvent3:
-  //       yield ButtonSelectedState(3);
-
-  //     case ButtonEvent.ButtonEvent4:
-  //       yield ButtonSelectedState(4);
-  //   }
-  // }
 }

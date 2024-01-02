@@ -3,6 +3,8 @@ import 'package:cinepedia/screens/favourites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get/get_navigation/src/routes/transitions_type.dart'
+    as GetTransitions;
 
 class appBar extends StatelessWidget implements PreferredSizeWidget {
   const appBar({super.key});
@@ -12,6 +14,7 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 10.0, 10.0, 0.0),
       child: AppBar(
+        automaticallyImplyLeading: false,
         title: RichText(
           text: const TextSpan(
             children: [
@@ -39,12 +42,17 @@ class appBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           InkWell(
               onTap: () {
-                Get.to(() => BlocProvider.value(
+                Get.to(
+                  () => BlocProvider.value(
                     value: BlocProvider.of<FavoriteBloc>(context),
-                    child: favourites()));
+                    child: const favourites(),
+                  ),
+                  duration: const Duration(milliseconds: 400),
+                  transition: GetTransitions.Transition.rightToLeftWithFade,
+                );
               },
-              child: const Icon(Icons.more_vert, color: Colors.white)),
-          
+              child: const Icon(Icons.favorite_border_outlined,
+                  color: Colors.white)),
         ],
       ),
     );

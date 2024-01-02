@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:scaled_list/scaled_list.dart';
 import 'package:http/http.dart' as http;
 
+
 class homeMovies extends StatefulWidget {
   const homeMovies({super.key});
 
@@ -114,6 +115,7 @@ class _homeMoviesState extends State<homeMovies> {
                                   'https://image.tmdb.org/t/p/w500${snapshot.data!.results![index].posterPath}',
                             ),
                           ),
+                          
                         );
                       },
                       child: Container(
